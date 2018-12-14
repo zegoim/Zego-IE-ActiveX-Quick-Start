@@ -262,5 +262,5 @@ loginButton.onclick = function () {
 - 拉流时机：在实现过程中，拉取的是对方的流，所以拉流操作传递的流id参数是对方的流id。在onStreamUpdated事件的流新增事件时可以获取到对方的流id。当收到新增流事件时在进行拉流操作。
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 - 视频控件说明，要显示的视频控件为&lt;OBJECT CLASSID="CLSID:e7b5087b-d657-4322-8244-5b63ee1f53ef"&gt;&lt;/OBJECT&gt;，开始视频时调用控件的startVideo方法，结束视频时，调用控件的stopVideo方法，显示黑屏。
-- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE6至IE11的浏览器版本。不支持Edge。
+- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本。不支持Edge。
 
