@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Zego LiveRoom IE ActiveX Control Quick Start Demo</title>
+</head>
+
+<body>
+
+  <h1>Zego LiveRoom IE ActiveX Control Quick Start Demo</h1>
+
+  <div>
+
+  </div>
+  <br/>
+  <div>
+    <button id="getVersion">读取版本号</button>
+    版本号：<span id="sdkversiontext"></span>
+  </div>
+
+  <div>
+    <button id="init">初始化sdk</button>
+  </div>
+
+  <div>
+    <button id="login">登录房间</button>
+  </div>
+
+  <div>
+    <button id="selectVideoDevice">选择设备</button>
+  </div>  
+
+  <div>
+    <button id="preview">开始预览</button>
+    <OBJECT CLASSID="CLSID:e7b5087b-d657-4322-8244-5b63ee1f53ef" id="localVideo" width="360px" height="240px"></OBJECT>
+  </div>
+
+  <div>
+    <button id="publishStream">开始推流</button>
+  </div>
+
+  <div>
+    <button id="playStream">开始拉流</button>
+    <OBJECT CLASSID="CLSID:e7b5087b-d657-4322-8244-5b63ee1f53ef" id="remoteVideo" width="360px" height="240px"></OBJECT>
+  </div>
+  
+  <div>
+    <button id="startRecord">开始录制</button>
+  </div>  
+  
+  <div>
+    <button id="stopRecord">停止录制</button>
+  </div>  
+  <div>
+    <button id="stopPlay">停止拉流</button>
+  </div>
+
+  <div>
+    <button id="stopPublish">停止推流</button>
+  </div>
+
+  <div>
+    <button id="logoutRoom">退出房间</button>
+  </div>
+
+  <div>
+    <button id="uninitSdk">反初始化sdk</button>
+  </div>
+  
+<script language="javascript" src="./libs/ZegoConstant.js"></script> 
+<script language="javascript" src="./libs/ZegoLiveRoomIE.js"></script> 
+
+<script language="javascript" src="./IEPluginDemo.js"></script> 
+
+<style>
+div{
+  margin-bottom: 0.5em;
+}
+</style>
+
+
+</body>
+
+</html>
