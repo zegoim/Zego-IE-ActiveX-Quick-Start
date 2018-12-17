@@ -281,7 +281,7 @@ loginButton.onclick = function () {
 - Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本，支持32位和64位。不支持Edge，暂时不支持XP。
 - 录制功能需要显卡对openGL支持，需要更新显卡驱动。
 - ActiveX 控件录制的目录说明：当录制存储文件目录设置为C盘根目录等IE没有权限写入文件的目录时，录制文件会被转移到临时目录：%appdata% 的 Local\VirtualStore下。
-- 使用IE浏览器打开index.html 时，弹出是否允许允许ActiveX控件是，请选择允许阻止的内容。
+- 使用IE浏览器打开index.html 时，弹出是否允许允许ActiveX控件时，请选择允许阻止的内容。
 ![允许权限](activex.png)
 
 
