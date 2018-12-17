@@ -104,6 +104,7 @@ loginButton.onclick = function () {
     });
   }
 ```
+<div STYLE="page-break-after: always;"></div>
 
 8. 定义视频显示控件，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/index.html#L36)，预览摄像头，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L128)
 ```
@@ -145,6 +146,8 @@ loginButton.onclick = function () {
     // 开启增益
     zegoClient.enableAGC({ enable: true });
 ```
+<div STYLE="page-break-after: always;"></div>
+
 10. 开始推流，发送音视频数据，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L150)
 ```
   // 设置采集分辨率
@@ -168,8 +171,6 @@ loginButton.onclick = function () {
     params: ""
   });
 ```
-<div STYLE="page-break-after: always;"></div>
-
 11. 开始拉流，播放音视频数据，开发过程中，需要传递的流id参数是对方的流id，这里为了演示，拉取的是自己的流id。[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L169)
 ```
 <!-- 显示对方视频的控件 -->
@@ -183,6 +184,8 @@ loginButton.onclick = function () {
    params: ""                                           // 拉流参数
   });
 ```
+<div STYLE="page-break-after: always;"></div>
+
 12. 开始录制，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L185)
 ```
   // 录制分辨率
@@ -229,6 +232,8 @@ loginButton.onclick = function () {
         }
     });
 ```
+<div STYLE="page-break-after: always;"></div>
+
 13. 停止录制，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L232)
 ```
   // 停止录制 
@@ -264,10 +269,11 @@ loginButton.onclick = function () {
 - 拉流时机：在实现过程中，拉取的是对方的流，所以拉流操作传递的流id参数是对方的流id。在onStreamUpdated事件的流新增事件时可以获取到对方的流id。当收到新增流事件时在进行拉流操作。
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 - 视频控件说明，要显示的视频控件为&lt;OBJECT CLASSID="CLSID:e7b5087b-d657-4322-8244-5b63ee1f53ef"&gt;&lt;/OBJECT&gt;，开始视频时调用控件的startVideo方法，结束视频时，调用控件的stopVideo方法，显示黑屏。
-- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本。不支持Edge。支持32位和64位
+- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本，支持32位和64位。不支持Edge，暂时不支持XP。
 - 录制功能需要显卡对openGL支持，需要更新显卡驱动。
-- ActiveX 控件录制的目录说明，录制存储文件为C盘等IE可写入文件权限的目录时，会被转移到临时目录：%appdata% 的 Local\VirtualStore下。
-
+- ActiveX 控件录制的目录说明：当录制存储文件目录设置为C盘根目录等IE没有权限写入文件的目录时，录制文件会被转移到临时目录：%appdata% 的 Local\VirtualStore下。
+- 使用IE浏览器打开index.html 时，弹出是否允许允许ActiveX控件是，请选择允许阻止的内容。
+![允许权限](activex.png)
 
 
 
