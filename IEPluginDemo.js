@@ -250,167 +250,6 @@ uninitSdkButton.onclick = function () {
   zegoClient.unInitSDK();
 };
 
-// SDK 引擎事件通知
-zegoClient.onEventHandler("onAVKitEvent", function (rs) {
-  console.log("SDK 引擎事件通知，onAVKitEvent, rs = ", rs);
-  // EventType:
-  // {
-  //     Play_BeginRetry: 1,        /**< 开始重试拉流 */
-  //     Play_RetrySuccess: 2,      /**< 重试拉流成功 */
-  //     Publish_BeginRetry: 3,     /**< 开始重试推流 */
-  //     Publish_RetrySuccess: 4,   /**< 重试推流成功 */
-  //     Play_TempDisconnected: 5,     /**< 拉流临时中断 */
-  //     Publish_TempDisconnected: 6,  /**< 推流临时中断 */
-  //     Play_VideoBreak: 7,           /**< 拉流卡顿(视频) */
-  // }
-});
-
-// 拉流状态通知
-zegoClient.onEventHandler("onPlayStateUpdate", function (rs) {
-  console.log("拉流状态通知，onPlayStateUpdate, rs = ", rs);
-  if (rs.error_code == 0) {
-    console.log("拉流成功, 流id=" + rs.stream_id);
-  } else {
-    // 错误码
-    //  = 0        拉流成功
-    //  = 3        直播遇到严重错误。stateCode = 1/2 基本不会出现|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);2、超过拉流路数(默认同时支持12路)范围限制。
-    //  = 5        获取流信息失败| 基本不会出现
-    //  = 6        流不存在。|请检查：1.环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致);2、拉流的streamid是否已推流成功。
-    //  = 7        媒体服务器连接失败。|1、推流端是否推流成功；2、环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致)；3.网络是否正常。
-    //  = 9        未 loginRoom 就直接调用startPlayingStream。|请检查：推流前是否已调用loginRoom。
-    //  = 197612   拉的流不存在|请检查：拉流的streamid是否已推流成功。
-    //  = 197619   禁止拉流|请检查：是否已调用后台禁止推流接口禁止此streamid推流。
-    //  = 262145   拉流被拒绝|请检查：streamid是否已推流
-    console.log('拉流失败,错误码为' + rs.error_code);
-  }
-});
-
-// 拉流质量更新事件通知
-zegoClient.onEventHandler("onPlayQualityUpdate", function (rs) {
-  //console.log("拉流质量更新事件通知，onPlayQualityUpdate, rs = ", rs);
-});
-
-// 推流状态更新返回
-zegoClient.onEventHandler("onPublishStateUpdate", function (rs) {
-  console.log("推流状态更新返回，onPublishStateUpdate, rs = ", rs);
-  if (rs.error_code == 0) {
-    console.log("推流成功, 流id=" + rs.stream_id);
-  } else {
-    // 错误码
-    //  = 0        推流成功
-    //  = 4        创建直播流失败。|请检查：1、userId\userName是否为空;2、streamid是否已存在；3、是否有开启测试环境(未配置正式环境的情况下)；4、appid\appkey是否正确。
-    //  = 7        媒体服务器连接失败。|请检查：客户端网络是否正常。
-    //  = 8        DNS 解析失败。|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);
-    console.log('推流失败,错误码为' + rs.error_code);
-  }
-});
-
-// 流更新事件通知
-zegoClient.onEventHandler("onStreamUpdated", function (rs) {
-  console.log("流更新事件通知， onStreamUpdated, rs = ", rs);
-  // add stream
-  if (rs.stream_update_type == ZEGOCONSTANTS.ZegoStreamUpdateType.StreamAdded) {
-    console.log("添加视频流，流列表为:", rs.stream_list);
-  } else if (rs.stream_update_type == ZEGOCONSTANTS.ZegoStreamUpdateType.StreamDeleted) {
-    // remove stream
-    console.log("移除了视频流，流列表为:", rs.stream_list);
-  }
-});
-
-// 推流质量通知
-zegoClient.onEventHandler("onPublishQualityUpdate", function (rs) {
-  //console.log("推流质量通知，onPublishQualityUpdate, rs = ", rs);
-});
-// 房间用户更新
-zegoClient.onEventHandler("onUserUpdate", function (rs) {
-  //console.log("房间用户更新，onUserUpdate, rs = ", rs);
-});
-// 房间在线人数更新
-zegoClient.onEventHandler("onUpdateOnlineCount", function (rs) {
-  //console.log("在线人数更新，onUpdateOnlineCount, rs = ", rs);
-});
-// 发送房间消息结果返回
-zegoClient.onEventHandler("onSendRoomMessage", function (rs) {
-  console.log("发送房间消息结果返回，onSendRoomMessage, rs = ", rs);
-});
-// 收到房间消息通知
-zegoClient.onEventHandler("onRecvRoomMessage", function (rs) {
-  console.log("收到房间消息通知，onRecvRoomMessage, rs = ", rs);
-});
-// 发送大房间消息结果返回
-zegoClient.onEventHandler("onSendBigRoomMessage", function (rs) {
-  console.log("发送大房间消息结果返回，onSendBigRoomMessage, rs = ", rs);
-});
-// 收到大房间消息通知
-zegoClient.onEventHandler("onRecvBigRoomMessage", function (rs) {
-  console.log("收到大房间消息通知，onRecvBigRoomMessage, rs = ", rs);
-});
-// 发送自定义消息结果返回
-zegoClient.onEventHandler("onCustomCommand", function (rs) {
-  console.log("发送自定义消息结果返回，onCustomCommand, rs = ", rs);
-});
-// 收到自定义消息通知
-zegoClient.onEventHandler("onRecvCustomCommand", function (rs) {
-  console.log("收到自定义消息通知，onRecvCustomCommand, rs = ", rs);
-});
-// 流额外信息更新通知
-zegoClient.onEventHandler("onStreamExtraInfoUpdated", function (rs) {
-  console.log("流额外信息更新通知，onStreamExtraInfoUpdated, rs = ", rs);
-});
-// 音频设备状态更新通知
-zegoClient.onEventHandler("onAudioDeviceStateChanged", function (rs) {
-  console.log("音频设备状态更新通知，onAudioDeviceStateChanged, rs = ", rs);  
-  // 新添加音频输出设备时，选择该输出设备
-  if(rs.device_type == 1){// 音频输出设备
-      // 0-新添加
-      if(rs.device_state == 0)
-      {
-          console.log("选择该音频输出设备:",rs.device_id);
-          zegoClient.setAudioDevice({device_type:1, device_id:rs.device_id});
-      }else{
-          // 移除播放设备，使用默认播放设备
-          var defalut_id = zegoClient.getDefaultAudioDeviceId({device_type:1});
-          console.log("移除了播放设备，使用默认设备进行播放:",defalut_id);
-          zegoClient.setAudioDevice({device_type:1, device_id:defalut_id});
-      }
-  }
-});
-// 视频设备状态更新通知
-zegoClient.onEventHandler("onVideoDeviceStateChanged", function (rs) {
-  console.log("视频设备状态更新通知，onVideoDeviceStateChanged, rs = ", rs);
-});
-// 音量变更事件通知
-zegoClient.onEventHandler("onAudioVolumeChanged", function (rs) {
-  console.log("音量变更事件通知，onAudioVolumeChanged, rs = ", rs);
-});
-// 设备状态错误事件通知
-zegoClient.onEventHandler("onDeviceError", function (rs) {
-  console.log("设备状态错误事件通知，onDeviceError, rs = ", rs);
-});
-// 被挤掉线通知
-zegoClient.onEventHandler("onKickOut", function (rs) {
-  console.log("被挤掉线通知，onKickOut, rs = ", rs);
-});
-// 已从房间断开连接
-zegoClient.onEventHandler("onDisconnect", function (rs) {
-  console.log("已从房间断开连接,onDisconnect, rs = ", rs);
-});
-// 与 server 重连成功通知
-zegoClient.onEventHandler("onReconnect", function (rs) {
-  console.log("与 server 重连成功通知，onReconnect, rs = ", rs);
-});
-// 临时中断通知
-zegoClient.onEventHandler("onTempBroken", function (rs) {
-  console.log("临时中断通知，onTempBroken, rs = ", rs);
-});
-// 引擎结束停止通知
-zegoClient.onEventHandler("onAVEngineStop", function () {
-  console.log("引擎结束停止通知，onAVEngineStop");
-});
-// 录制状态回调
-zegoClient.onEventHandler("onRecordStatusUpdate", function (rs) {
-  console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
-});
 
 window.onunload = function() {
     // 浏览器刷新时，停止推拉流，退出房间，反初始化sdk
@@ -423,4 +262,177 @@ window.onunload = function() {
     zegoClient.unInitSDK();
 
 };
+
+
+window.onload = function () {
+    
+    // 加载Zego Liveroom Activex 插件，加载成功后才可以调用zegoClient的其它函数
+    if(zegoClient.initPlugin())
+    {
+        // SDK 引擎事件通知
+        zegoClient.onEventHandler("onAVKitEvent", function (rs) {
+          console.log("SDK 引擎事件通知，onAVKitEvent, rs = ", rs);
+          // EventType:
+          // {
+          //     Play_BeginRetry: 1,        /**< 开始重试拉流 */
+          //     Play_RetrySuccess: 2,      /**< 重试拉流成功 */
+          //     Publish_BeginRetry: 3,     /**< 开始重试推流 */
+          //     Publish_RetrySuccess: 4,   /**< 重试推流成功 */
+          //     Play_TempDisconnected: 5,     /**< 拉流临时中断 */
+          //     Publish_TempDisconnected: 6,  /**< 推流临时中断 */
+          //     Play_VideoBreak: 7,           /**< 拉流卡顿(视频) */
+          // }
+        });
+
+        // 拉流状态通知
+        zegoClient.onEventHandler("onPlayStateUpdate", function (rs) {
+          console.log("拉流状态通知，onPlayStateUpdate, rs = ", rs);
+          if (rs.error_code == 0) {
+            console.log("拉流成功, 流id=" + rs.stream_id);
+          } else {
+            // 错误码
+            //  = 0        拉流成功
+            //  = 3        直播遇到严重错误。stateCode = 1/2 基本不会出现|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);2、超过拉流路数(默认同时支持12路)范围限制。
+            //  = 5        获取流信息失败| 基本不会出现
+            //  = 6        流不存在。|请检查：1.环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致);2、拉流的streamid是否已推流成功。
+            //  = 7        媒体服务器连接失败。|1、推流端是否推流成功；2、环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致)；3.网络是否正常。
+            //  = 9        未 loginRoom 就直接调用startPlayingStream。|请检查：推流前是否已调用loginRoom。
+            //  = 197612   拉的流不存在|请检查：拉流的streamid是否已推流成功。
+            //  = 197619   禁止拉流|请检查：是否已调用后台禁止推流接口禁止此streamid推流。
+            //  = 262145   拉流被拒绝|请检查：streamid是否已推流
+            console.log('拉流失败,错误码为' + rs.error_code);
+          }
+        });
+
+        // 拉流质量更新事件通知
+        zegoClient.onEventHandler("onPlayQualityUpdate", function (rs) {
+          //console.log("拉流质量更新事件通知，onPlayQualityUpdate, rs = ", rs);
+        });
+
+        // 推流状态更新返回
+        zegoClient.onEventHandler("onPublishStateUpdate", function (rs) {
+          console.log("推流状态更新返回，onPublishStateUpdate, rs = ", rs);
+          if (rs.error_code == 0) {
+            console.log("推流成功, 流id=" + rs.stream_id);
+          } else {
+            // 错误码
+            //  = 0        推流成功
+            //  = 4        创建直播流失败。|请检查：1、userId\userName是否为空;2、streamid是否已存在；3、是否有开启测试环境(未配置正式环境的情况下)；4、appid\appkey是否正确。
+            //  = 7        媒体服务器连接失败。|请检查：客户端网络是否正常。
+            //  = 8        DNS 解析失败。|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);
+            console.log('推流失败,错误码为' + rs.error_code);
+          }
+        });
+
+        // 流更新事件通知
+        zegoClient.onEventHandler("onStreamUpdated", function (rs) {
+          console.log("流更新事件通知， onStreamUpdated, rs = ", rs);
+          // add stream
+          if (rs.stream_update_type == ZEGOCONSTANTS.ZegoStreamUpdateType.StreamAdded) {
+            console.log("添加视频流，流列表为:", rs.stream_list);
+          } else if (rs.stream_update_type == ZEGOCONSTANTS.ZegoStreamUpdateType.StreamDeleted) {
+            // remove stream
+            console.log("移除了视频流，流列表为:", rs.stream_list);
+          }
+        });
+
+        // 推流质量通知
+        zegoClient.onEventHandler("onPublishQualityUpdate", function (rs) {
+          //console.log("推流质量通知，onPublishQualityUpdate, rs = ", rs);
+        });
+        // 房间用户更新
+        zegoClient.onEventHandler("onUserUpdate", function (rs) {
+          //console.log("房间用户更新，onUserUpdate, rs = ", rs);
+        });
+        // 房间在线人数更新
+        zegoClient.onEventHandler("onUpdateOnlineCount", function (rs) {
+          //console.log("在线人数更新，onUpdateOnlineCount, rs = ", rs);
+        });
+        // 发送房间消息结果返回
+        zegoClient.onEventHandler("onSendRoomMessage", function (rs) {
+          console.log("发送房间消息结果返回，onSendRoomMessage, rs = ", rs);
+        });
+        // 收到房间消息通知
+        zegoClient.onEventHandler("onRecvRoomMessage", function (rs) {
+          console.log("收到房间消息通知，onRecvRoomMessage, rs = ", rs);
+        });
+        // 发送大房间消息结果返回
+        zegoClient.onEventHandler("onSendBigRoomMessage", function (rs) {
+          console.log("发送大房间消息结果返回，onSendBigRoomMessage, rs = ", rs);
+        });
+        // 收到大房间消息通知
+        zegoClient.onEventHandler("onRecvBigRoomMessage", function (rs) {
+          console.log("收到大房间消息通知，onRecvBigRoomMessage, rs = ", rs);
+        });
+        // 发送自定义消息结果返回
+        zegoClient.onEventHandler("onCustomCommand", function (rs) {
+          console.log("发送自定义消息结果返回，onCustomCommand, rs = ", rs);
+        });
+        // 收到自定义消息通知
+        zegoClient.onEventHandler("onRecvCustomCommand", function (rs) {
+          console.log("收到自定义消息通知，onRecvCustomCommand, rs = ", rs);
+        });
+        // 流额外信息更新通知
+        zegoClient.onEventHandler("onStreamExtraInfoUpdated", function (rs) {
+          console.log("流额外信息更新通知，onStreamExtraInfoUpdated, rs = ", rs);
+        });
+        // 音频设备状态更新通知
+        zegoClient.onEventHandler("onAudioDeviceStateChanged", function (rs) {
+          console.log("音频设备状态更新通知，onAudioDeviceStateChanged, rs = ", rs);  
+          // 新添加音频输出设备时，选择该输出设备
+          if(rs.device_type == 1){// 音频输出设备
+              // 0-新添加
+              if(rs.device_state == 0)
+              {
+                  console.log("选择该音频输出设备:",rs.device_id);
+                  zegoClient.setAudioDevice({device_type:1, device_id:rs.device_id});
+              }else{
+                  // 移除播放设备，使用默认播放设备
+                  var defalut_id = zegoClient.getDefaultAudioDeviceId({device_type:1});
+                  console.log("移除了播放设备，使用默认设备进行播放:",defalut_id);
+                  zegoClient.setAudioDevice({device_type:1, device_id:defalut_id});
+              }
+          }
+        });
+        // 视频设备状态更新通知
+        zegoClient.onEventHandler("onVideoDeviceStateChanged", function (rs) {
+          console.log("视频设备状态更新通知，onVideoDeviceStateChanged, rs = ", rs);
+        });
+        // 音量变更事件通知
+        zegoClient.onEventHandler("onAudioVolumeChanged", function (rs) {
+          console.log("音量变更事件通知，onAudioVolumeChanged, rs = ", rs);
+        });
+        // 设备状态错误事件通知
+        zegoClient.onEventHandler("onDeviceError", function (rs) {
+          console.log("设备状态错误事件通知，onDeviceError, rs = ", rs);
+        });
+        // 被挤掉线通知
+        zegoClient.onEventHandler("onKickOut", function (rs) {
+          console.log("被挤掉线通知，onKickOut, rs = ", rs);
+        });
+        // 已从房间断开连接
+        zegoClient.onEventHandler("onDisconnect", function (rs) {
+          console.log("已从房间断开连接,onDisconnect, rs = ", rs);
+        });
+        // 与 server 重连成功通知
+        zegoClient.onEventHandler("onReconnect", function (rs) {
+          console.log("与 server 重连成功通知，onReconnect, rs = ", rs);
+        });
+        // 临时中断通知
+        zegoClient.onEventHandler("onTempBroken", function (rs) {
+          console.log("临时中断通知，onTempBroken, rs = ", rs);
+        });
+        // 引擎结束停止通知
+        zegoClient.onEventHandler("onAVEngineStop", function () {
+          console.log("引擎结束停止通知，onAVEngineStop");
+        });
+        // 录制状态回调
+        zegoClient.onEventHandler("onRecordStatusUpdate", function (rs) {
+          console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
+        });
+    }else{
+        console.log("加载Zego Liveroom Activex 插件 失败");
+    }
+}
+
 

@@ -10,22 +10,28 @@ function ZegoLiveRoom() {
     var zego_api_ = null;
     var local_main_video_view_ = null;
     var local_aux_video_view_ = null;
-
-    if (!document.getElementById('ZegoLiveRoom')) {
-        var pluginObj = document.createElement('object');
-        pluginObj.setAttribute('id', 'ZegoLiveRoom');
-        if (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window) {
-            pluginObj.setAttribute('classid', 'CLSID:4b60e490-4a44-430e-bd58-0cad128ee21e');
-        } else {
-            pluginObj.setAttribute('type', 'application/zego-liveroom');
+    
+    this.initPlugin = function()
+    {
+        if (!document.getElementById('ZegoLiveRoom')) {
+            var pluginObj = document.createElement('object');
+            pluginObj.setAttribute('id', 'ZegoLiveRoom');
+            if (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window) {
+                pluginObj.setAttribute('classid', 'CLSID:4b60e490-4a44-430e-bd58-0cad128ee21e');
+            } else {
+                pluginObj.setAttribute('type', 'application/zego-liveroom');
+            }
+            document.body.appendChild(pluginObj);
+            pluginObj.setAttribute('width', '0');
+            pluginObj.setAttribute('height', '0');
+            zego_api_ = pluginObj;
+            
+            return true;
         }
-        document.body.appendChild(pluginObj);
-        pluginObj.setAttribute('width', '0');
-        pluginObj.setAttribute('height', '0');
-        zego_api_ = pluginObj;
-    }
-    if (!zego_api_) {
-        console.log("load zego liveroom api sdk failed.");
+        if (!zego_api_) {
+            console.log("load zego liveroom api sdk failed.");
+            return false;
+        }
     }
 
     /**

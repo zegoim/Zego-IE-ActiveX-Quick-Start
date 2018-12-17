@@ -32,10 +32,19 @@ F12 打开日志调试栏，依次点击以下按钮：
 <script language="javascript" src="./libs/ZegoConstant.js"></script> 
 <script language="javascript" src="./libs/ZegoLiveRoomIE.js"></script> 
 ```
-3. 在js文件中，创建zego client，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L17)
+3. 在js文件中，创建zego client，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L17)，加载ActiveX插件[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L269)。
 ```
 // 创建zego client
 var zegoClient = new ZegoLiveRoom();
+```
+```
+// 加载插件接口
+window.onload = function () {
+  // 加载Zego Liveroom Activex 插件，加载成功后才可以调用zegoClient的其它函数
+  if(zegoClient.initPlugin())
+  {
+    // 
+  }
 ```
 4. 配置当前环境，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L70)
 ```
