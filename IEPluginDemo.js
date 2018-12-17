@@ -59,13 +59,15 @@ var TEST_PLAY_STREAM_ID = TEST_PUB_STREAM_ID;
 getVersionButton.onclick = function () {
   document.getElementById("sdkversiontext").innerText = zegoClient.getSDKVersion();
 };
-
+var have_init_ = false;
 // 初始化sdk
 initButton.onclick = function () {
-
+  if(have_init_){
+      zegoClient.unInitSDK();
+      have_init_ = false;
+  }
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
-
   // 初始化sdk
   var ret = zegoClient.initSDK({
     app_id: app_id,
@@ -75,6 +77,7 @@ initButton.onclick = function () {
   }, function (rs) {
     if (rs.error_code == 0) {
       console.log("sdk初始化成功");
+      have_init_ = true;
     } else {
       console.log("sdk初始化失败,错误码为：" + rs.error_code);
       zegoClient.unInitSDK();
@@ -87,7 +90,6 @@ initButton.onclick = function () {
     zegoClient.unInitSDK();
   }
 };
-
 // 登录
 loginButton.onclick = function () {
   // 登陆房间
@@ -104,7 +106,6 @@ loginButton.onclick = function () {
     }
   });
 };
-
 // 选择摄像头设备
 selectVideoDeviceButton.onclick = function () {
   // 获取摄像头设备列表
@@ -117,10 +118,8 @@ selectVideoDeviceButton.onclick = function () {
     });
   }
 };
-
 // 预览本地摄像头
 previewButton.onclick = function () {
-    
   // 设置分辨率
   zegoClient.setVideoCaptureResolution({ width: 1080, height: 720 });
   // 设置编码分辨率
@@ -138,10 +137,8 @@ previewButton.onclick = function () {
 
     // 开启回音消除
     zegoClient.enableAEC({ enable: true });
-
     // 开启噪音消除
     zegoClient.enableANS({ enable: true });
-
     // 开启增益
     zegoClient.enableAGC({ enable: true });
   }

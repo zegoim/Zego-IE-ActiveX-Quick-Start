@@ -14,13 +14,13 @@ const app_id = "";
 // app key，是一个字符串，格式例如 "0x01, 0x03, 0x44, ...."
 const sign_key = "";
 ```
+<div STYLE="page-break-after: always;"></div>
 
 ## 三、运行程序，使用IE浏览器打开 index.html 文件
 F12 打开日志调试栏，依次点击以下按钮：
 初始化sdk-->登录房间-->选择设备-->开始预览-->开始推流-->开始拉流，界面如下：
 
 ![工程运行后的界面](demo.bmp)
-
 <div STYLE="page-break-after: always;"></div>
 
 # 在自己项目中集成Zego IE ActiveX SDK的步骤
@@ -37,13 +37,19 @@ F12 打开日志调试栏，依次点击以下按钮：
 // 创建zego client
 var zegoClient = new ZegoLiveRoom();
 ```
-4. 配置当前环境，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L65)
+4. 配置当前环境，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L70)
 ```
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
 ```
-5. 初始化sdk，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L69)
+5. 初始化sdk，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L65)
 ```
+  if(have_init_){
+      zegoClient.unInitSDK();
+      have_init_ = false;
+  }
+  // 配置设置当前环境为测试环境
+  zegoClient.setUseEnv({ use_test_env: true });
   // 初始化sdk
   var ret = zegoClient.initSDK({
     app_id: app_id,
@@ -53,6 +59,7 @@ var zegoClient = new ZegoLiveRoom();
   }, function (rs) {
     if (rs.error_code == 0) {
       console.log("sdk初始化成功");
+      have_init_ = true;
     } else {
       console.log("sdk初始化失败,错误码为：" + rs.error_code);
       zegoClient.unInitSDK();
@@ -64,9 +71,8 @@ var zegoClient = new ZegoLiveRoom();
     console.log("sdk初始化失败");
     zegoClient.unInitSDK();
   }
-};
 ```
-6. 登录房间，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L90)
+6. 登录房间，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L96)
 ```
 // 登录
 loginButton.onclick = function () {
@@ -86,7 +92,7 @@ loginButton.onclick = function () {
 };
 ```
 
-7. 选择设备，[参考代码](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L110)
+7. 选择设备，[参考代码](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L111)
 ```
   // 获取摄像头设备列表
   var video_devices_list = zegoClient.getVideoDeviceList();
@@ -162,6 +168,7 @@ loginButton.onclick = function () {
     params: ""
   });
 ```
+<div STYLE="page-break-after: always;"></div>
 
 11. 开始拉流，播放音视频数据，开发过程中，需要传递的流id参数是对方的流id，这里为了演示，拉取的是自己的流id。[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L169)
 ```
@@ -176,8 +183,6 @@ loginButton.onclick = function () {
    params: ""                                           // 拉流参数
   });
 ```
-<div STYLE="page-break-after: always;"></div>
-
 12. 开始录制，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L185)
 ```
   // 录制分辨率
@@ -224,21 +229,17 @@ loginButton.onclick = function () {
         }
     });
 ```
-
 13. 停止录制，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L232)
 ```
   // 停止录制 
   zegoClient.stopRecord()
 ```
-<div STYLE="page-break-after: always;"></div>
-
 14. 停止拉流播放音视频数据，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L180)
 ```
   zegoClient.stopPlayingStream({ 
     stream_id: TEST_PLAY_STREAM_ID  // 流id
   });
 ```
-
 15. 停止推流发送音视频数据，[参考代码 ](https://github.com/zegoim/Zego-IE-ActiveX-Quick-Start/blob/master/IEPluginDemo.js#L238)
 ```
   zegoClient.stopPublishing({
@@ -254,6 +255,7 @@ loginButton.onclick = function () {
 ```
   zegoClient.unInitSDK();
 ```
+<div STYLE="page-break-after: always;"></div>
 
 20. **注意点说明**
 -  推流和拉流：Zego SDK 把采集我方的音视频，编码后发送到 Zego 实时网络，此步骤被称为“推流”。同时，Zego SDK 从 Zego 实时网络中接收对方的音视频数据流，解码得到对方的声音与画面，此步骤被称作“拉流”。通话双方各自推我方流和拉对方流，视频通话就建立起来了。
@@ -262,5 +264,19 @@ loginButton.onclick = function () {
 - 拉流时机：在实现过程中，拉取的是对方的流，所以拉流操作传递的流id参数是对方的流id。在onStreamUpdated事件的流新增事件时可以获取到对方的流id。当收到新增流事件时在进行拉流操作。
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 - 视频控件说明，要显示的视频控件为&lt;OBJECT CLASSID="CLSID:e7b5087b-d657-4322-8244-5b63ee1f53ef"&gt;&lt;/OBJECT&gt;，开始视频时调用控件的startVideo方法，结束视频时，调用控件的stopVideo方法，显示黑屏。
-- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本。不支持Edge。
+- Zego LiveRoom IE ActiveX 支持的浏览器版本为：IE8至IE11的浏览器版本。不支持Edge。支持32位和64位
+- 录制功能需要显卡对openGL支持，需要更新显卡驱动。
+- ActiveX 控件录制的目录说明，录制存储文件为C盘等IE可写入文件权限的目录时，会被转移到临时目录：%appdata% 的 Local\VirtualStore下。
+
+
+
+
+
+
+
+
+
+
+
+
 
